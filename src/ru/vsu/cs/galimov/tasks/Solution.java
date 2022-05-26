@@ -28,7 +28,7 @@ public class Solution {
     }
 
     // подсчет попределителя
-    private static double determinantСount(double[][] matrix){
+    public static double determinantСount(double[][] matrix){
         double sum = 0;
         if(matrix.length == 1){
             return matrix[0][0];

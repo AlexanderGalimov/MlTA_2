@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 public class GraphicApp {
     private JFrame frame;
     private JLabel statusLabel;
-    private JTextField colorTextField;
     private JTextField nameTextField;
     private GraphicPanel graphicPanel;
 
@@ -18,24 +18,24 @@ public class GraphicApp {
     }
 
     private void createFrame() {
-        frame = new JFrame("Графическое приложение");
+        frame = new JFrame("Отрисовка графика");
         frame.setSize(1000, 800);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     public void show(){
         frame.setVisible(true);
-}
+    }
 
     private void initElements() {
         Container mainContainer = frame.getContentPane();
         mainContainer.setLayout(new BorderLayout());
 
         JPanel bottomPanel = new JPanel(); // нижняя панель состояния
-        bottomPanel.setBackground(Color.lightGray); // фон светло-серый
+        bottomPanel.setBackground(Color.black); // фон светло-серый
         mainContainer.add(bottomPanel, BorderLayout.SOUTH); // распологается внизу
 
-        statusLabel = new JLabel("Инициализация приложения.."); // Элемент, который будет показывать текст состояния программы
+        statusLabel = new JLabel("приложение"); // Элемент, который будет показывать текст состояния программы
         bottomPanel.add(statusLabel);    // добавляем его в нижнюю панель
 
         Box leftPanel = createLeftPanel(); // создаем левую панель в другом методе
@@ -55,7 +55,7 @@ public class GraphicApp {
         title.setFont(new Font(null, Font.BOLD, 12)); // изменяем шрифт
         panel.add(title);
 
-        panel.add(Box.createVerticalStrut(20)); //в Box можно добавлять отступы
+        panel.add(Box.createVerticalStrut(20)); // отступы
 
         panel.add(new JLabel("Введите а:"));
 
@@ -63,33 +63,44 @@ public class GraphicApp {
         nameTextField.setMaximumSize(new Dimension(300, 30)); // чтобы не был слишком большим
         panel.add(nameTextField);
 
-        panel.add(new JLabel("Цвет:"));
+        JButton button1 = new JButton("Нарисовать 1 кривую"); // Кнопка 1
+        panel.add(button1);
+        panel.add(new JLabel("y = sqrt(x^3 / 3 * a - x)"));
+        JButton button2 = new JButton("Нарисовать 2 кривую"); // Кнопка 2
+        panel.add(button2);
+        panel.add(new JLabel("y^2 = x^2 * a - x / a + x"));
 
-        colorTextField = new JTextField("#FF0000");  // поле ввода с начальным текстом
-        colorTextField.setMaximumSize(new Dimension(300, 30));
-        panel.add(colorTextField);
-
-        panel.add(Box.createVerticalGlue()); // также в Box можно добавлять заполнитель пустого места
-
-        JButton button = new JButton("Нарисовать"); // Кнопка
-        panel.add(button);
-
-        button.addActionListener(new ActionListener() {
+        button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeGraphicColor();
+                changeGraphicColor(1);
             }
         });
+
+        button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeGraphicColor(2);
+            }
+        });
+
         return panel;
     }
 
-    private void changeGraphicColor(){
+    private void changeGraphicColor(int index){
         try{
             int a = Integer.parseInt(nameTextField.getText());
-            String color = colorTextField.getText();
-            graphicPanel.setAAndColor(a, color);
+            Random rand = new Random();
+
+            float r = rand.nextFloat();
+            float g = rand.nextFloat();
+            float b = rand.nextFloat();
+
+            Color randomColor = new Color(r, g, b);
+
+            graphicPanel.setAAndColor(a, randomColor,index);
         }catch(NumberFormatException e){
-            System.out.print("Давай по новой");
+            System.out.print("ошибка");
         }
     }
 }
